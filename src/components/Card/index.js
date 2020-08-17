@@ -1,49 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-import { getSinglePokemon } from '../../services/api.services';
-import { replaceAll, numberWith3Digits } from '../../util';
+import { numberWith3Digits } from '../../util';
+import { Container, PokemonDescription, AvatarPokemon } from './styles';
 
-import './styles.css';
-
-function Card({ url }) {
-  const [pokemonData, setPokemonData] = useState({
-    name: 'loading',
-  });
-
-  useEffect(() => {
-    const [, splitedId] = url?.split('pokemon');
-    const id = replaceAll({
-      string: splitedId,
-      search: '/',
-      replace: '',
-    });
-
-    getSinglePokemon({ id }).then(response => setPokemonData(response.data));
-  }, [url]);
-
+function Card({ pokemon }) {
   return (
-    <div
-      className={
-        pokemonData?.types?.length
-          ? `pokemon-card ${pokemonData?.types[0].type.name}`
-          : 'pokemon-card'
-      }
-    >
-      <div className="content">
-        <span className="id">#{numberWith3Digits(pokemonData?.id)}</span>
-        <strong>{pokemonData?.name}</strong>
-        {pokemonData?.types?.map(pokemonType => (
-          <p key={pokemonData?.types?.indexOf(pokemonType)} className="types">
-            {pokemonType?.type.name}
-          </p>
-        ))}
-      </div>
+    <Container color={pokemon.types[0]}>
+      <span># {numberWith3Digits(pokemon.id)}</span>
 
-      <img
-        src={pokemonData?.sprites?.front_default}
-        alt={`front sprite of ${pokemonData?.name}`}
+      <PokemonDescription>
+        <strong>{pokemon.name}</strong>
+
+        <ul>
+          {pokemon.types.map(type => (
+            <li key={type}>{type}</li>
+          ))}
+        </ul>
+      </PokemonDescription>
+
+      <AvatarPokemon
+        src={pokemon.avatar_url}
+        alt={`Front sprite if ${pokemon.name}`}
       />
-    </div>
+    </Container>
   );
 }
 

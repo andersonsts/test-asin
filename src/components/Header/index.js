@@ -2,16 +2,19 @@ import React from 'react';
 import { FiHome } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 
-import './styles.css';
+import { HeaderContainer, TotalPokemonsContainer } from './styles';
 
-function Header({ quantity }) {
+function Header({ quantity = 1048 }) {
   return (
-    <header className="header">
+    <HeaderContainer>
       <Link to="/">
-        <FiHome size={20} />
+        <FiHome size={24} /> <p>Dashboard</p>
       </Link>
-      Total of pokemon: {quantity}
-    </header>
+      <TotalPokemonsContainer className="header">
+        <p>Total of pokemon:</p>
+        <strong>{quantity}</strong>
+      </TotalPokemonsContainer>
+    </HeaderContainer>
   );
 }
 
